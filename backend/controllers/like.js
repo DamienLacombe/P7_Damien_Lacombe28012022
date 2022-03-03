@@ -9,16 +9,17 @@ exports.addLike = (req, res, next) => {
 
     db.query(`SELECT * FROM likes WHERE posts_id = ${posts_id} AND users_id = ${users_id}`)
         .then(resp => { 
-            
+            console.log("ok");
             if(resp.length > 0) {
-                    
                 db.query(`DELETE FROM likes WHERE posts_id = ${posts_id} AND users_id = ${users_id}`)
-                    .then(() => res.status(200).json({message: "Le like a bien été supprimé"}))
-                    .catch(err => res.status(400).json({err}))
+            
+                       return res.status(200).json({like: 0})
+        
+                    
             } 
             
             db.query(`INSERT INTO likes (posts_id, users_id) VALUES (${posts_id}, ${users_id})`)
-                .then(() => res.status(201).json({message: "Le like a bien été ajouté"}))
+                .then(() => res.status(201).json({like: 1}))
                 .catch(err => res.status(400).json({err}));
             
         })
@@ -27,10 +28,10 @@ exports.addLike = (req, res, next) => {
 
 exports.getAllLikes = (req, res, next) => {
 
-    const posts_id = req.body.posts_id;
+    const post_id = req.params.id;
 
-    db.query(`SELECT COUNT(*) FROM likes WHERE posts_id = ${posts_id}`)
-        .then(total => res.status(200).json(total[0]["COUNT(*)"]))
+    db.query(`SELECT likes.users_id FROM likes WHERE posts_id = ${post_id}`)
+        .then(likes => res.status(200).json(likes))
         .catch(err => res.status(400).json({err}));
 }
 

@@ -20,7 +20,6 @@ function Login(props) {
     }
 
     const handleSubmit = (e) => {
-        console.log(userInfo);
         e.preventDefault()
         fetch("http://localhost:4200/api/auth/login", {
              headers: {
@@ -29,13 +28,19 @@ function Login(props) {
             },
             method: "POST",
             body: JSON.stringify(userInfo)
-        })
+        })       
         .then(resp => {
-            return resp.json();
+            if (resp.ok) {
+                return resp.json();
+            } 
+            throw new Error('Utilisateur non autorisé');
         })
         .then(data => {
             setToLocalStorage("dataUser", data);
             navigate("/home")
+        })
+        .catch(err => {
+            navigate("/error")
         })
     }
 

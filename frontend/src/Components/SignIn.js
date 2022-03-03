@@ -19,7 +19,6 @@ const SignIn = (props) => {
     }
 
     const handleSubmit = (e) => {
-        console.log(userInfo);
         e.preventDefault()
         fetch("http://localhost:4200/api/auth/signup", {
              headers: {

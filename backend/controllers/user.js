@@ -58,17 +58,27 @@ exports.getUser = (req, res, next) => {
 
 exports.updateUser = (req, res, next) => {
 
-    const {email, password, pseudo, bio, image_url} = req.body;
+    const {password, pseudo, bio} = req.body;
     const id = req.params.id;
-    console.log(req.body);
-    if (!email || !password || !pseudo || !bio || !image_url) {
-
-        return res.status(400).json({message: "Requête incomplete"});
+    let image_url = ""
+    
+    if (req.file) {
+        image_url = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     }
-
-    db.query(`UPDATE users SET email = '${email}', password = '${password}', pseudo = '${pseudo}', bio = '${bio}', image_url = '${image_url}' WHERE id = ${id}`)
-        .then(() => res.status(201).json({message : "L'utilisateur a bien été modifié"}))
-        .catch(error => res.status(400).json({error}));
+    if (password === ""){
+        db.query(`UPDATE users SET pseudo = '${pseudo}', bio = '${bio}', image_url = '${image_url}' WHERE id = ${id}`)
+            .then(() => res.status(201).json({message : "L'utilisateur a bien été modifié"}))
+            .catch(error => res.status(400).json({error}));
+    } else {
+        bcrypt.hash(req.body.password, 10)
+        .then(hash => {
+            db.query(`UPDATE users SET password = '${hash}', pseudo = '${pseudo}', bio = '${bio}', image_url = '${image_url}' WHERE id = ${id}`)
+                .then(() => res.status(201).json({message : "L'utilisateur a bien été modifié"}))
+                .catch(error => res.status(400).json({error}));
+        })
+    }
+    
+    
 }
 
 exports.deleteUser = (req, res, next) => {

@@ -24,15 +24,14 @@ CREATE TABLE IF NOT EXISTS `groupomania`.`users` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(45) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
-  `pseudo` VARCHAR(45) NULL DEFAULT NULL,
-  `bio` VARCHAR(500) NULL DEFAULT NULL,
-  `image_url` VARCHAR(80) NULL DEFAULT NULL,
+  `pseudo` VARCHAR(45) NOT NULL,
+  `bio` VARCHAR(500) NULL,
+  `image_url` VARCHAR(250) NULL,
   `admin` TINYINT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
-  UNIQUE INDEX `pseudo_UNIQUE` (`pseudo` ASC) VISIBLE)
+  UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
+AUTO_INCREMENT = 12
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -43,8 +42,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `groupomania`.`posts` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `content` VARCHAR(1500) NOT NULL,
-  `image_url` VARCHAR(80) NULL DEFAULT NULL,
-  `likes_count` INT NULL DEFAULT '0',
+  `image_url` VARCHAR(250) NULL DEFAULT NULL,
   `users_id` INT NOT NULL,
   PRIMARY KEY (`id`, `users_id`),
   INDEX `fk_posts_users1_idx` (`users_id` ASC) VISIBLE,
@@ -53,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `groupomania`.`posts` (
     REFERENCES `groupomania`.`users` (`id`)
     ON DELETE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
+AUTO_INCREMENT = 16
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -72,13 +70,13 @@ CREATE TABLE IF NOT EXISTS `groupomania`.`comments` (
   CONSTRAINT `fk_comments_posts`
     FOREIGN KEY (`posts_id`)
     REFERENCES `groupomania`.`posts` (`id`)
-    ON DELETE RESTRICT,
+    ON DELETE CASCADE,
   CONSTRAINT `fk_comments_users1`
     FOREIGN KEY (`users_id`)
     REFERENCES `groupomania`.`users` (`id`)
     ON DELETE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 6
+AUTO_INCREMENT = 23
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -91,17 +89,18 @@ CREATE TABLE IF NOT EXISTS `groupomania`.`likes` (
   `posts_id` INT NOT NULL,
   `users_id` INT NOT NULL,
   PRIMARY KEY (`id`, `posts_id`, `users_id`),
-  INDEX `fk_likes_posts1_idx` (`posts_id` ASC) VISIBLE,
+  INDEX `fk_likes_posts1_idx` (`posts_id` ASC) INVISIBLE,
   INDEX `fk_likes_users1_idx` (`users_id` ASC) VISIBLE,
   CONSTRAINT `fk_likes_posts1`
     FOREIGN KEY (`posts_id`)
-    REFERENCES `groupomania`.`posts` (`id`),
+    REFERENCES `groupomania`.`posts` (`id`)
+    ON DELETE CASCADE,
   CONSTRAINT `fk_likes_users1`
     FOREIGN KEY (`users_id`)
     REFERENCES `groupomania`.`users` (`id`)
     ON DELETE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 10
+AUTO_INCREMENT = 38
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 

@@ -4,7 +4,7 @@ const router = express.Router();
 const likectrl = require("../controllers/like");
 const auth = require("../middlewares/auth");
 
-router.post("/", likectrl.addLike);
-router.get("/", likectrl.getAllLikes);
+router.post("/", auth, likectrl.addLike);
+router.get("/:id", auth, likectrl.getAllLikes);
 
 module.exports = router;
