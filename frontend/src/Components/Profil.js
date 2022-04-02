@@ -124,7 +124,7 @@ function Profil(props) {
 
                     updateUser && (
                         <>
-                            <label className='fileLabel' htmlFor="file" >Choisissez une nouvelle image</label>
+                            <label className='fileLabel pointer' htmlFor="file" >Choisissez une nouvelle image</label>
                             <input type="file" name='file' className='file profilImage' id='file'/>
                             
                         </>
@@ -154,7 +154,7 @@ function Profil(props) {
                                 })
                             }} ></textarea>
                             <input name="password" type="text" value={newPassword} className="password" placeholder='Modifier votre mot de passe' onChange={(e) => {setNewPassword(e.target.value)}} />
-                            <input type="submit" value="Valider" className='valider' />
+                            <input type="submit" value="Valider" className='valider pointer' />
                         </form>
                     ) : (
                         <>

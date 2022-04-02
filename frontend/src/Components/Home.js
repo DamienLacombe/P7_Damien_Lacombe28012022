@@ -126,15 +126,15 @@ function Home() {
             </nav>
             <div className='add-post first'>
                 <div className='add-post-head'>
-                    <img src={userLog === undefined ? "icone" : (
+                    <img className='pointer' src={userLog === undefined ? "icone" : (
                         userLog[0].image_url === null ? icone : userLog[0].image_url
                     )} alt="profil" onClick={() =>getProfil(getToLocalStorage("dataUser").userId)}/>
                     <form onSubmit={(e) => addPost(e)} id='addPostForm'>
                         <textarea rows={1}  name="content" placeholder='Comment allez vous ?' onChange={(e) => setContent({ content: e.target.value })}></textarea>
                         <div className='btn-container'>
                             <input type="file" name="file"  className='file ' id='addPostFile'/>
-                            <label htmlFor="addPostFile" name="file"className='fileLabel'>Ajouter une image</label>
-                            <input type="submit" value="Poster" className='button' />
+                            <label htmlFor="addPostFile" name="file"className='fileLabel pointer'>Ajouter une image</label>
+                            <input type="submit" value="Poster" className='button pointer' />
                         </div>
                     </form>
                 </div>

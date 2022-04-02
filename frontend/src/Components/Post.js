@@ -209,12 +209,12 @@ const Post = (props) => {
                                 <div>
                                     <img src={userData[0] === undefined ? "" : (
                                         userData[0].image_url === null ? icone : userData[0].image_url
-                                    )} alt="Profil" onClick={() =>props.getProfil(props.postData.users_id)}/>
-                                    <p onClick={() =>props.getProfil(props.postData.users_id)}>{userData[0] === undefined ? "" : userData[0].pseudo}</p>
+                                    )} alt="Profil" className='pointer' onClick={() =>props.getProfil(props.postData.users_id)}/>
+                                    <p className='pointer' onClick={() =>props.getProfil(props.postData.users_id)}>{userData[0] === undefined ? "" : userData[0].pseudo}</p>
                                     <p>{ }</p>
                                 </div>
                                 {
-                                    props.postData.users_id === getToLocalStorage("dataUser").userId ? (
+                                    props.postData.users_id === getToLocalStorage("dataUser").userId || getToLocalStorage("dataUser").admin === true ? (
 
                                         <div>
                                             <FontAwesomeIcon icon={faPen} onClick={update} />
@@ -230,7 +230,7 @@ const Post = (props) => {
                                         <textarea type="text" name="content" className='content' value={content} onChange={(e) => setContent(e.target.value)} />
                                         <div>
                                             <input type="file" name="file"  className='file ' id='file'/>
-                                            <label htmlFor="file" name="file"className='fileLabel'>Ajouter une image</label>
+                                            <label htmlFor="file" name="file"className='fileLabel pointer'>Ajouter une image</label>
                                             <input type="submit" className='valider' />
                                         </div>
                                         
@@ -261,10 +261,10 @@ const Post = (props) => {
                         }
                         <div className='add-post'>
                             <div className='add-post-head add-comment-container'>
-                                <img src={props.userImageUrl} alt="profil" />
+                                <img src={props.userImageUrl} className='pointer' alt="profil" />
                                 <form onSubmit={(e) => addComment(e)} className="add-comment">
                                     <textarea rows="1" placeholder='Réagissez' onChange={(e) => setComment({ content: e.target.value })}></textarea>
-                                    <input type="submit" value="Poster" className='button' />
+                                    <input type="submit" value="Poster" className='button pointer' />
                                 </form>
                             </div>
                         </div>

@@ -19,9 +19,13 @@ exports.signUp = (req, res, next) => {
 exports.login = (req, res, next) => {
 
     const {email, password} = req.body;
+    let isAdmin = false;
 
     db.query(`SELECT * FROM users WHERE email = '${email}' `)
         .then(user => {
+            if (user[0].admin === 1) {
+                isAdmin = true;
+            }
             if(!user) {
 
                 return res.status(404).json({message: "l'utilisateur n'existe pas"});
@@ -37,10 +41,11 @@ exports.login = (req, res, next) => {
                     .then(user_Id => { 
                         res.status(201).json({   
                             userId: user_Id[0].id,
-                            token: jwt.sign({userId: user_Id[0].id}, process.env.RANDOM_TOKEN_SECRET, {expiresIn: "24h"})
+                            token: jwt.sign({userId: user_Id[0].id}, process.env.RANDOM_TOKEN_SECRET, {expiresIn: "24h"}),
+                            admin: isAdmin
                         })
                     })
-                    .catch(err => res.status(400).json({message: "ta mere la pute"}));
+                    .catch(err => res.status(400).json({message: "ok"}));
                 })
                 .catch(err => res.status(400).json({err}));
         })
@@ -66,7 +71,7 @@ exports.updateUser = (req, res, next) => {
         image_url = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     }
     if (password === ""){
-        db.query(`UPDATE users SET pseudo = '${pseudo}', bio = '${bio}', image_url = '${image_url}' WHERE id = ${id}`)
+        db.query(`UPDATE users SET pseudo = "${pseudo}", bio = "${bio}", image_url = '${image_url}' WHERE id = ${id}`)
             .then(() => res.status(201).json({message : "L'utilisateur a bien été modifié"}))
             .catch(error => res.status(400).json({error}));
     } else {

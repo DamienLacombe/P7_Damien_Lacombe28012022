@@ -111,7 +111,7 @@ const Comments = (props) => {
                             }
                         </div>
                         {
-                            props.commentData.users_id === getToLocalStorage("dataUser").userId ? (
+                            props.commentData.users_id === getToLocalStorage("dataUser").userId || getToLocalStorage("dataUser").admin === true ? (
 
                                 <div className='icons'>
                                     <FontAwesomeIcon icon={faPen} onClick={update} />

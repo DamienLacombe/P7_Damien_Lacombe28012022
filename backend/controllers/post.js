@@ -20,14 +20,14 @@ exports.createPost = (req, res, next) => {
 exports.getPost = (req, res, next) => {
 
     const id = req.params.id;
-    db.query(`SELECT * FROM posts WHERE id = ${id}`)
+    db.query(`SELECT * FROM posts WHERE id = ${id} `)
         .then(post => res.status(200).json(post))
         .catch(err => res.status(400).json({err}));
 }
 
 exports.getAllPosts = (req, res, next) => { 
     
-    db.query(`SELECT * FROM posts`)
+    db.query(`SELECT * FROM posts ORDER BY id DESC `)
         .then(posts => res.status(200).json(posts))
         .catch(err => res.status(400).json({err}));
 }
