@@ -261,7 +261,7 @@ const Post = (props) => {
                         }
                         <div className='add-post'>
                             <div className='add-post-head add-comment-container'>
-                                <img src={props.userImageUrl} className='pointer' alt="profil" />
+                                <img src={props.userImageUrl === null ? icone : props[0].image_url} className='pointer' alt="profil" />
                                 <form onSubmit={(e) => addComment(e)} className="add-comment">
                                     <textarea rows="1" placeholder='Réagissez' onChange={(e) => setComment({ content: e.target.value })}></textarea>
                                     <input type="submit" value="Poster" className='button pointer' />
